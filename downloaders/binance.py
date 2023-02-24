@@ -1,11 +1,13 @@
 from _constants import KLINE_COLUMNS 
 from _constants import SYMBOLS_URL
-from _constants import ZIP_URL 
+from _constants import ZIP_URL
 
-from joblib import delayed, Parallel
 from datetime import timedelta
+from zipfile import BadZipFile
 from datetime import datetime
+from joblib import Parallel
 from zipfile import ZipFile
+from joblib import delayed
 from pathlib import Path
 from io import BytesIO
 import pandas as pd
@@ -18,11 +20,7 @@ from _shared import DATA_DIR, logger
 
 
 def fetch_url(url):
-    response = requests.get(url)
-    if response.status_code != 200:
-        err = f"Binance Download Error. Status code {response.status_code} for {url}"
-        # logger.error(err)
-        raise Exception(err)
+    response = requests.get(url, timeout=10)
     return response
 
 
@@ -43,23 +41,27 @@ def download_kline_data(url):
         df = pd.read_csv(_file, header=None, names=KLINE_COLUMNS)
     return df
 
+def download_1m_kline(date, symbol):
+    url = ZIP_URL.format(
+        DATE=date,
+        SYMBOL=symbol,
+        TIMEFRAME="1m"
+    )
+    df = download_kline_data(url)
+    df.index.name = 'open_time'
+    df = df.reset_index()
+    df.to_csv(DATA_DIR / f"tmp/{date}.csv", index=False)
 
 def download_date(date, symbol):
     date = date.strftime('%Y-%m-%d')
-    url = ZIP_URL.format(
-        DATE=date,
-        SYMBOL=symbol
-    )
     try:
-        df = download_kline_data(url)
-        df.index.name = 'open_time'
-        df = df.reset_index()
-        df.to_csv(DATA_DIR / f"tmp/{date}.csv", index=False)
-    except Exception as e:
-        if '404' not in str(e):
-            logger.error(e)
+        return download_1m_kline(date, symbol)
+    except BadZipFile:
+        pass    
 
 def download_symbol(symbol: str, dates: list[datetime]):
+
+    print(symbol)
 
     Parallel(n_jobs=20)(
         delayed(download_date)(
@@ -76,10 +78,12 @@ def download_symbol(symbol: str, dates: list[datetime]):
     
     if len(dfs) > 0:
         df = pd.concat(dfs).sort_values('open_time', ascending=True)
-        df.to_csv(DATA_DIR / f"{symbol}.csv", index=False)
         logger.info(f"Collected {len(df)} rows for {symbol}")
     else:
+        df = pd.DataFrame(columns=KLINE_COLUMNS)
         logger.warning(f"No data collected for {symbol}")
+
+    df.to_csv(DATA_DIR / f"{symbol}.csv", index=False)
 
 def main():
 
