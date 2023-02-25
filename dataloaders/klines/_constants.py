@@ -17,11 +17,27 @@ class KLineReference(Enum):
     NUMBER_OF_TRADES = 'number_of_trades'
 
 
-KLines: Enum = Enum('KLines', 
+KLines = Enum('KLines',
     {
         file.stem: file.stem
         for file in DATA_DIR.iterdir()
         if file.stat().st_size > 120
         and file.suffix == '.csv'
-    }
+    },
+    type=str,
+)
+
+KLINE_AGGS = dict(
+    open_time='first',
+    open='first',
+    high='max',
+    low='min',
+    close='last',
+    volume='sum',
+    close_time='last',
+    quote_volume='sum',
+    number_of_trades='sum',
+    taker_buy_base_volume='sum',
+    taker_buy_quote_volume='sum',
+    ignore='last'
 )

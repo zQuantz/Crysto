@@ -13,18 +13,3 @@ KLINE_COLUMNS = [
     'taker_buy_quote_volume',
     'ignore'
 ]
-
-KLINE_AGGS = dict(
-    open_time='first',
-    open='first',
-    high='max',
-    low='min',
-    close='last',
-    volume='sum',
-    close_time='last',
-    quote_volume='sum',
-    number_of_trades='sum',
-    taker_buy_base_volume='sum',
-    taker_buy_quote_volume='sum',
-    ignore='last'
-)
