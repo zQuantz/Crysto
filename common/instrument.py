@@ -1,11 +1,20 @@
-import sys
-sys.path.append(".")
+from typing import List
 
 from dataloaders.dataloader import DataLoader
+from features.feature import Feature
 
 class Instrument:
 
-    def __init__(self, uid: str, price_loader: DataLoader):
+    def __init__(self, uid: str, price_loader: DataLoader, features: List[Feature]):
         
         self.uid = uid
-        self.price_data = price_loader.load()
+        self.data = price_loader.load()
+
+        self.features = features
+        self.initialize_features()
+
+    def initialize_features(self):
+
+        for feature in self.features:
+            print("Calculating feature", feature.name)
+            self.data[feature.name] = feature.initialize(self.data)         

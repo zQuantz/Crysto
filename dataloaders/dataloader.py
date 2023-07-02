@@ -5,6 +5,6 @@ class DataLoader(ABC):
 
     @abstractmethod
     def load(data: Enum):
-        ...
+        pass
 
     
