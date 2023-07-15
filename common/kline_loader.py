@@ -2,12 +2,12 @@ import pandas as pd
 import sys
 sys.path.append(".")
 
-from processors.resampler import ResampleFrequency
-from processors.resampler import Resampler
+from common.resampler import ResampleFrequency
+from common.resampler import Resampler
 
-from dataloaders.klines._constants import KLINE_AGGS
-from dataloaders.klines._constants import KLines
-from dataloaders.dataloader import DataLoader
+from common._constants import KLINE_AGGS
+from common._constants import KLines
+from models.dataloader import DataLoader
 from _shared import DATA_DIR
 
 class KLineLoader(DataLoader):

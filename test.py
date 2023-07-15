@@ -1,15 +1,15 @@
 import pandas as pd
 
-from dataloaders.klines.kline_loader import KLineLoader
-from dataloaders.klines._constants import KLineReference
-from dataloaders.klines._constants import KLines
+from common.kline_loader import KLineLoader
+from common._constants import KLineReference
+from common._constants import KLines
 
-from processors._constants import ResampleFrequency
+from common._constants import ResampleFrequency
 from common.instrument import Instrument
 
-from features.two_candle_close import TwoCandleClose
-from features.generic_feature import GenericFeature
-from features.rolling_feature import RollingFeature
+from common.features.two_candle_close import TwoCandleClose
+from common.features.generic_feature import GenericFeature
+from common.features.rolling_feature import RollingFeature
 
 if __name__ == '__main__':
 

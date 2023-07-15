@@ -1,6 +1,6 @@
 import pandas as pd
 
-from features.feature import Feature
+from models.feature import Feature
 
 class TwoCandleClose(Feature):
 

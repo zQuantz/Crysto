@@ -3,7 +3,7 @@ import pandas as pd
 import sys
 sys.path.append(".")
 
-from processors._constants import ResampleFrequency
+from common._constants import ResampleFrequency
 
 class Resampler:
 

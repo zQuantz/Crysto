@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
 
-
 class Feature(ABC):
 
     @abstractmethod

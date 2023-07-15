@@ -1,7 +1,7 @@
 from typing import List
 
-from dataloaders.dataloader import DataLoader
-from features.feature import Feature
+from models.dataloader import DataLoader
+from models.feature import Feature
 
 class Instrument:
 
@@ -17,4 +17,4 @@ class Instrument:
 
         for feature in self.features:
             print("Calculating feature", feature.name)
-            self.data[feature.name] = feature.initialize(self.data)         
+            self.data[feature.name] = feature.initialize(self.data)
